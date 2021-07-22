@@ -27,24 +27,23 @@ bool IsNumber(string num, int num_len) {
 
 string Pos_to_Neg (string num, int num_len) {
 
-    string new_num = "-";
-    new_num.resize(num_len + 1);
+    num.resize(num_len + 1);
 
-    for (int i = 0; i < num_len; i++) {
-        new_num[i+1] = num[i];
-    }
-    return new_num;
+    for (int i = num_len; i > 0; i--) 
+        num[i] = num[i-1];
+
+    num[0] = '-';
+    return num;
 }
 
 
 string Neg_to_Pos (string num, int num_len) {
 
-    string new_num = num;
-    for (int i = 1; i < num_len; i++){
-        new_num[i-1] = num[i];
-    }
-    new_num.resize(num_len - 1);
-    return new_num;
+    for (int i = num_len - 1; i > 0; i--)
+        num[i-1] = num[i];
+
+    num.resize(num_len - 1);
+    return num;
 }
 
 
@@ -327,23 +326,29 @@ string BigIntCalc::Add(string a, string b){
         }
 
         if (sign_a & !sign_b) {
+            b = Neg_to_Pos(b, b_len);
+            b_len = b_len - 1;
+
             if (which_bigger == '1') {
                 answer = Subtraction(a, b, a_len, b_len);
             }
             else if (which_bigger == '2') {
-                //todo
+                answer = Subtraction(b, a, b_len, a_len);
+                answer = Pos_to_Neg(answer, answer.length());
             }
         }
         else if (!sign_a && sign_b) {  
+            a = Neg_to_Pos(a, a_len);
+            a_len = a_len - 1;
+
             if (which_bigger == '1') {
                 answer = Subtraction(a, b, a_len, b_len);
+                answer = Pos_to_Neg(answer, answer.length());
             }
             else if (which_bigger == '2') {
-                //todo
+                answer = Subtraction(b, a, b_len, a_len);
             }
         }
-        
-    
     }
 
     return answer;
@@ -407,16 +412,24 @@ string BigIntCalc::Subtract(string a, string b) {
                 answer = Subtraction(a, b, a_len, b_len);
             }
             else if (which_bigger == '2') {
-                //поменять знак ответа
+                answer = Subtraction(b, a, b_len, a_len);
+                answer = Pos_to_Neg(answer, answer.length());
             }
         }
 
         else if (!sign_a && !sign_b) {
+
+            a = Neg_to_Pos(a, a_len);
+            b = Neg_to_Pos(b, b_len);
+            a_len =- 1;
+            b_len =- 1;
+
             if (which_bigger == '1') {
                 answer = Subtraction(a, b, a_len, b_len);
+                answer = Pos_to_Neg(answer, answer.length());
             }
             else if (which_bigger == '2') {
-                //поменять знак ответа
+                answer = Subtraction(b, a, b_len, a_len);
             }
         }
     }
