@@ -5,7 +5,7 @@
 
 using namespace std;
 
-    class Calculation {   
+    class BigIngCalc {   
         public:
 
         static string Add(string a, string b);
